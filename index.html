@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>بیابان‌های جهان</title>
+    <meta
+      name="description"
+      content="ارائهٔ سه‌بعدی و تعاملی بیابان‌های جهان با محیط voxel و کنترل‌های موبایل و کامپیوتر"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <div id="loadingOverlay" class="overlay visible">
+      <div class="loading-card">
+        <div class="spinner"></div>
+        <p>درحال آماده‌سازی محیط سه‌بعدی...</p>
+      </div>
+    </div>
+
+    <div id="startScreen" class="overlay start-screen visible">
+      <div class="hero-panel">
+        <div class="eyebrow">درس مطالعات اجتماعی | ارائهٔ سه‌بعدی</div>
+        <h1>بیابان‌های جهان</h1>
+        <p>
+          در این سفر، به بررسی شکل‌گیری، ویژگی‌ها، جغرافیا و زندگی در بیابان‌ها
+          می‌پردازیم؛ از صحرای آفریقا تا جنوبگان.
+        </p>
+        <div class="start-actions">
+          <button id="startBtn" class="primary-btn">شروع ارائه</button>
+          <button id="exploreBtnFromStart" class="secondary-btn">ورود به اکتشاف</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="hud" class="hud hidden">
+      <header class="topbar">
+        <div class="brand-block">
+          <span class="brand">بیابان‌های جهان</span>
+          <span class="mode-pill" id="modeLabel">حالت ارائه</span>
+        </div>
+
+        <div class="toolbar">
+          <select id="qualitySelect" aria-label="کیفیت گرافیکی">
+            <option value="low">کیفیت کم</option>
+            <option value="medium" selected>کیفیت متوسط</option>
+            <option value="high">کیفیت زیاد</option>
+          </select>
+
+          <button id="modeToggleBtn" class="tool-btn">تغییر حالت</button>
+          <button id="toggleInfoBtn" class="tool-btn">پنهان/نمایش پنل</button>
+          <button id="pauseBtn" class="tool-btn">توقف</button>
+          <button id="fullscreenBtn" class="tool-btn">تمام‌صفحه</button>
+        </div>
+      </header>
+
+      <aside id="infoPanel" class="info-panel">
+        <div class="slide-meta" id="slideMeta">بخش ۱</div>
+        <h2 id="slideTitle">بیابان چیست؟</h2>
+        <div id="slideContent" class="slide-content"></div>
+
+        <div id="mapPanel" class="map-panel">
+          <h3>نقشهٔ جهان</h3>
+          <div id="mapGrid" class="map-grid" aria-label="نقشه جهان"></div>
+          <div id="regionInfo" class="region-info">
+            روی مناطق کلیک کنید تا اطلاعات آن‌ها نمایش داده شود.
+          </div>
+        </div>
+
+        <div id="comparePanel" class="compare-panel">
+          <h3>مقایسهٔ بیابان‌ها</h3>
+          <div id="compareChart" class="compare-chart"></div>
+        </div>
+
+        <div id="quizPanel" class="quiz-panel hidden">
+          <h3>پرسش کوتاه</h3>
+          <p id="quizQuestion">بیابان‌های قطبی به چه دلیل در زمرهٔ بیابان‌ها قرار می‌گیرند؟</p>
+          <button id="quizRevealBtn" class="primary-btn small">نمایش پاسخ</button>
+          <p id="quizAnswer" class="quiz-answer hidden">
+            چون میزان بارش در آن‌ها بسیار کم است و رطوبت و دما به‌صورت طولانی‌مدت شرایط خشک و بی‌گیاپی ایجاد می‌کند.
+          </p>
+        </div>
+      </aside>
+
+      <nav class="bottom-nav">
+        <div class="section-nav" id="sectionNav"></div>
+        <div class="nav-group">
+          <button id="prevBtn" class="nav-btn">قبلی</button>
+          <button id="nextBtn" class="nav-btn primary">بعدی</button>
+        </div>
+      </nav>
+    </div>
+
+    <div id="desktopControls" class="input-overlay desktop-only">
+      <div class="controls-box">
+        <span>W A S D</span>
+        <span>حرکت</span>
+      </div>
+      <div class="controls-box">
+        <span>ماوس</span>
+        <span>چرخش دوربین</span>
+      </div>
+      <div class="controls-box">
+        <span>← →</span>
+        <span>مرحله</span>
+      </div>
+      <div class="controls-box">
+        <span>E</span>
+        <span>تعامل</span>
+      </div>
+    </div>
+
+    <div id="mobileControls" class="input-overlay mobile-only hidden">
+      <div id="joystickBase" class="joystick-base">
+        <div id="joystickKnob" class="joystick-knob"></div>
+      </div>
+
+      <div id="lookPad" class="look-pad" aria-label="چرخش دوربین"></div>
+
+      <div class="touch-actions">
+        <button id="interactTouchBtn" class="touch-btn">E</button>
+        <button id="prevTouchBtn" class="touch-btn">قبلی</button>
+        <button id="nextTouchBtn" class="touch-btn">بعدی</button>
+        <button id="menuTouchBtn" class="touch-btn">منو</button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

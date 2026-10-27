@@ -1,0 +1,875 @@
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+
+const slides = [
+  {
+    id: "intro",
+    title: "بیابان‌های جهان",
+    meta: "بخش ۱ · آغاز",
+    content: [
+      "بیابان‌ها مناطق خشک و کم‌باران هستند؛ در آن‌ها تبخیر و تعرق از بارش بیشتر است و زندگی با کمبود آب سازگار می‌شود.",
+      "در محیط سه‌بعدی، می‌توانیم از یک پایگاه اکتشاف به نقاط مختلف سفر کنیم و این مفاهیم را در بستر واقعی جهان بررسی کنیم.",
+      "هدف این ارائه، فهم نقش بیابان‌ها در جغرافیا، آب و زندگی است."
+    ],
+    camera: { pos: [0, 3, 11], look: [0, 1.2, 0] },
+    map: "جهانی"
+  },
+  {
+    id: "what-is-desert",
+    title: "بیابان چیست؟",
+    meta: "بخش ۲ · تعریف",
+    content: [
+      "بیابان منطقه‌ای است که سالانه بارش بسیار کمی دریافت می‌کند؛ در نتیجه گیاهان و جانوران برای بقا باید به آب، دما و رطوبت سازگار شوند.",
+      "روزهای گرم و شب‌های سرد از ویژگی‌های معمول در بسیاری از بیابان‌هاست؛ گرمای شدید در روز و سرمای زیاد در شب، فشار زیادی بر موجودات زنده می‌آورد.",
+      "کمبود بارش مهم‌ترین عامل تعیین‌کنندهٔ بیابانی بودن یک منطقه است."
+    ],
+    camera: { pos: [12, 2.6, 6], look: [0, 1.5, 0] },
+    map: "عرصه‌های خشک"
+  },
+  {
+    id: "formation",
+    title: "شکل‌گیری بیابان‌ها",
+    meta: "بخش ۳ · فرآیندها",
+    content: [
+      "پرفشارهای جنب‌حاره‌ای، هوای گرم و خشک را به مناطق وسیعی می‌فرستند و مانع از تجمع ابرهای باران می‌شوند.",
+      "کوهستان‌ها در مسیر باد، باران را روی سمت رو به باد به‌جا می‌گذارند و سمت دیگر به‌دلیل سایهٔ بارشی، بسیار خشک می‌شود.",
+      "جریان‌های سرد اقیانوسی نیز با خنک کردن هوا، رطوبت را کم می‌کنند و موجب بارندگی کم در سواحل می‌شوند."
+    ],
+    camera: { pos: [-10, 2.9, 8], look: [-2, 1.5, 0] },
+    map: "جغرافیای آب و هوا"
+  },
+  {
+    id: "world-map",
+    title: "نقشهٔ جهان",
+    meta: "بخش ۴ · مکان‌ها",
+    content: [
+      "بیابان‌ها در سه‌گانهٔ میانهٔ گرمسیری، حاشیه کوهستان‌ها و مناطق داخلی قاره‌ها دیده می‌شوند.",
+      "موقعیت جغرافیایی و الگوهای باد، زمین‌ریخت و جریان‌های دریایی، تعیین‌کنندهٔ وسعت و نوع بیابان هستند.",
+      "در نقشه، مناطق مهم مانند شمال آفریقا، مرکز آسیا، آمریکای جنوبی و استرالیا به‌صورت مناطق خشک قابل شناخت‌اند."
+    ],
+    camera: { pos: [0, 5, 18], look: [0, 1.2, 0] },
+    map: "چشم‌انداز جهانی"
+  },
+  {
+    id: "sahara",
+    title: "صحرای بزرگ آفریقا",
+    meta: "بخش ۵ · بیابان‌های مهم",
+    content: [
+      "صحرای بزرگ آفریقا یکی از گرم‌ترین و خشک‌ترین بیابان‌هاست و در شمال آفریقا قرار دارد.",
+      "در بسیاری از نقاط آن دمای روز به‌طور بسیار بالا می‌رسد و تفاوت دمای روز و شب زیاد است.",
+      "در این منطقه، آب‌های سطحی محدودند و بسیاری از گیاهان و جانوران با کم‌آبی شدید سازگار شده‌اند."
+    ],
+    camera: { pos: [16, 2.8, 10], look: [10, 1.2, 0] },
+    map: "ساحل شمال آفریقا"
+  },
+  {
+    id: "gobi",
+    title: "بیابان گُبی",
+    meta: "بخش ۵ · بیابان‌های مهم",
+    content: [
+      "بیابان گُبی در شرق آسیا است و به‌خاطر سرمای شدید در زمستان و گرمای طاقت‌فرسا در تابستان شناخته می‌شود.",
+      "کوه‌ها، دشت‌ها و تپه‌های شنی در آن دیده می‌شود و گاهی بادهای شدید، سطح زمین را جابه‌جا می‌کنند.",
+      "در این بیابان، مردمان محلی و جانوران با شرایط گرم و سرد شدید به زندگی خود ادامه می‌دهند."
+    ],
+    camera: { pos: [-19, 2.5, 3], look: [-10, 1.2, 0] },
+    map: "شرق آسیا"
+  },
+  {
+    id: "atacama",
+    title: "آتاکاما",
+    meta: "بخش ۵ · بیابان‌های مهم",
+    content: [
+      "آتاکاما در آمریکای جنوبی، از خشک‌ترین بیابان‌های جهان به‌شمار می‌آید و در نزدیکی کوه‌های آند قرار دارد.",
+      "به‌دلیل سایهٔ بارشی کوهستان‌ها و جریان‌های سرد اقیانوسی، بارش در آن بسیار اندک است.",
+      "این منطقه به‌ویژه برای مطالعهٔ آب و هوای خشک و شرایط سخت زمین، اهمیت علمی دارد."
+    ],
+    camera: { pos: [22, 2.8, -10], look: [14, 1.2, -5] },
+    map: "آمریکای جنوبی"
+  },
+  {
+    id: "australia",
+    title: "بیابان‌های استرالیا",
+    meta: "بخش ۵ · بیابان‌های مهم",
+    content: [
+      "در استرالیا، بیابان‌های وسیع و گرم در مناطق مرکزی و داخلی قاره قرار دارند.",
+      "این بیابان‌ها به‌دلیل گرمای زیاد، فرسایش شدید و گیاهان مقاوم، ویژگی‌هایی خاص دارند.",
+      "بسیاری از گونه‌های گیاهی و جانوری استرالیا برای زنده ماندن در چنین شرایطی شکل گرفته‌اند."
+    ],
+    camera: { pos: [-14, 3, -14], look: [-8, 1.3, -8] },
+    map: "استرالیا"
+  },
+  {
+    id: "cold-deserts",
+    title: "بیابان‌های سرد",
+    meta: "بخش ۶ · بیابان‌های قطبی",
+    content: [
+      "بیابان‌های سرد در مناطق قطبی دیده می‌شوند؛ جایی که بارش بسیار کم است و دما در طول سال بسیار پایین می‌ماند.",
+      "در این مناطق، یخ، برف و باد شدید جایگزین دمای گرم و شنی می‌شوند. جنوبگان بزرگ‌ترین بیابان جهان از نظر مساحت است.",
+      "بیابان‌های سرد هم مانند بیابان‌های گرم، به دلیل کمبود بارش، شرایط بیابانی دارند."
+    ],
+    camera: { pos: [0, 7, 18], look: [0, 3.5, 0] },
+    map: "قطب‌ها"
+  },
+  {
+    id: "life",
+    title: "زندگی در بیابان",
+    meta: "بخش ۷ · سازگاری",
+    content: [
+      "گیاهان بیابانی ریشه‌های عمیق، برگ‌های کوچک و پوست‌های پوشیده از مو دارند تا آب را حفظ کنند.",
+      "جانوران نیز با فعالیت در شب، خزیدن در سایه و ذخیره‌سازی آب، به شرایط سخت سازگار شده‌اند.",
+      "انسان‌ها نیز در بیابان‌ها با ساخت آبادی‌ها، سیستم‌های آبیاری و سبک زندگی مناسب، به حیات خود ادامه داده‌اند."
+    ],
+    camera: { pos: [-8, 3.2, 10], look: [-2, 1.5, 0] },
+    map: "زیست‌محیط"
+  },
+  {
+    id: "compare",
+    title: "مقایسهٔ بیابان‌ها",
+    meta: "بخش ۸ · داده‌ها",
+    content: [
+      "در مقایسه، بیابان‌ها از نظر مساحت، میزان بارش، دما و نوع گیاهان متفاوت‌اند.",
+      "بیابان‌های گرم معمولاً دمای روز بالا دارند؛ اما بیابان‌های سرد، با سرمای شدید و یخ، شرایط متفاوتی دارند.",
+      "درک این تفاوت‌ها به ما کمک می‌کند به‌خوبی بگوییم که چه چیزی یک بیابان را «بیابان» می‌کند."
+    ],
+    camera: { pos: [10, 3.2, 10], look: [0, 1.3, 0] },
+    map: "فراوانی و اختلاف"
+  },
+  {
+    id: "facts",
+    title: "دانستنی‌های جالب",
+    meta: "بخش ۹ · واقعیت‌ها",
+    content: [
+      "بعضی از بیابان‌ها هرگز به‌صورت کامل بدون گیاه نیستند؛ در منطقه‌ای که آب زیرزمینی موجود است، گیاهان می‌توانند رشد کنند.",
+      "بادهای شدید می‌توانند تپه‌های شنی را جابه‌جا کنند و شکل بیابان را در طول سال تغییر دهند.",
+      "در برخی مناطق، شب‌های بیابانی بسیار سرد هستند، حتی اگر روزها بسیار گرم باشند."
+    ],
+    camera: { pos: [6, 4, 15], look: [0, 1.8, 0] },
+    map: "واقعیت‌های علمی"
+  },
+  {
+    id: "summary",
+    title: "جمع‌بندی و پرسش",
+    meta: "بخش ۱۰ · پایان",
+    content: [
+      "بیابان‌ها با کمبود بارش، تفاوت دما و سازگاری جانوران و گیاهان، یکی از مهم‌ترین زیست‌بوم‌های زمین‌اند.",
+      "جغرافیا، باد، کوهستان و جریان‌های دریایی، همگی در شکل‌گیری آن‌ها نقش دارند.",
+      "در پایان، به سؤال‌ها و تفاوت‌ها با یک نگاه کلی به چرخهٔ آب و زندگی در مناطق خشک می‌پردازیم."
+    ],
+    camera: { pos: [0, 4.2, 14], look: [0, 1.8, 0] },
+    map: "پرسش پایانی"
+  }
+];
+
+const regions = [
+  {
+    name: "صحرای بزرگ",
+    info: "بزرگ‌ترین بیابان گرم جهان؛ در شمال آفریقا و در منطقه‌ای با گرمای بسیار شدید و بارش اندک واقع شده است.",
+    target: "sahara"
+  },
+  {
+    name: "گُبی",
+    info: "بیابان خشک و نوسانی در شمال چین و مغولستان؛ با اختلاف دمای شدید و نقش مهم بادهای روبه‌باد.",
+    target: "gobi"
+  },
+  {
+    name: "آتاکاما",
+    info: "یکی از خشک‌ترین مناطق زمین، با بارش بسیار کم به‌خاطر سایهٔ بارشی کوه‌ها و جریان‌های سرد اقیانوسی.",
+    target: "atacama"
+  },
+  {
+    name: "استرالیا",
+    info: "بیابان‌های داخلی استرالیا، در بخش‌های مرکزی و خشک قاره قرار دارند و با گیاهان مقاوم و چرخه‌های آبی کم شناخته می‌شوند.",
+    target: "australia"
+  },
+  {
+    name: "قطب‌ها",
+    info: "بیابان‌های سرد، با یخ و باد شدید، در مناطق قطبی دیده می‌شوند و بارش بسیار کمی دارند.",
+    target: "cold-deserts"
+  },
+  {
+    name: "جهان",
+    info: "بیابان‌ها در سراسر جهان و در مناطق گرم، سرد و کوهستانی رشد می‌کنند، اما عامل مشترک تمام آن‌ها کمبود بارش است.",
+    target: "world-map"
+  }
+];
+
+const comparisonData = [
+  { label: "صحرای بزرگ", value: 88 },
+  { label: "گُبی", value: 70 },
+  { label: "آتاکاما", value: 42 },
+  { label: "استرالیا", value: 64 },
+  { label: "قطب‌ها", value: 86 }
+];
+
+const state = {
+  started: false,
+  mode: "presentation",
+  currentIndex: 0,
+  infoVisible: true,
+  paused: false,
+  activeSlide: null,
+  moveForward: false,
+  moveBackward: false,
+  moveLeft: false,
+  moveRight: false,
+  cameraYaw: 0,
+  cameraPitch: 0,
+  inputMode: "auto",
+  pointerLocked: false,
+  touchMoveX: 0,
+  touchMoveY: 0,
+  lookTouchActive: false,
+  lookTouchX: 0,
+  lookTouchY: 0,
+  worldMoveX: 0,
+  worldMoveZ: 0,
+  quality: "medium"
+};
+
+const refs = {
+  canvas: document.getElementById("scene"),
+  loadingOverlay: document.getElementById("loadingOverlay"),
+  startScreen: document.getElementById("startScreen"),
+  hud: document.getElementById("hud"),
+  modeLabel: document.getElementById("modeLabel"),
+  slideMeta: document.getElementById("slideMeta"),
+  slideTitle: document.getElementById("slideTitle"),
+  slideContent: document.getElementById("slideContent"),
+  sectionNav: document.getElementById("sectionNav"),
+  prevBtn: document.getElementById("prevBtn"),
+  nextBtn: document.getElementById("nextBtn"),
+  infoPanel: document.getElementById("infoPanel"),
+  startBtn: document.getElementById("startBtn"),
+  exploreBtnFromStart: document.getElementById("exploreBtnFromStart"),
+  modeToggleBtn: document.getElementById("modeToggleBtn"),
+  toggleInfoBtn: document.getElementById("toggleInfoBtn"),
+  pauseBtn: document.getElementById("pauseBtn"),
+  fullscreenBtn: document.getElementById("fullscreenBtn"),
+  mapGrid: document.getElementById("mapGrid"),
+  regionInfo: document.getElementById("regionInfo"),
+  compareChart: document.getElementById("compareChart"),
+  qualitySelect: document.getElementById("qualitySelect"),
+  quizPanel: document.getElementById("quizPanel"),
+  quizRevealBtn: document.getElementById("quizRevealBtn"),
+  quizAnswer: document.getElementById("quizAnswer"),
+  desktopControls: document.getElementById("desktopControls"),
+  mobileControls: document.getElementById("mobileControls"),
+  joystickBase: document.getElementById("joystickBase"),
+  joystickKnob: document.getElementById("joystickKnob"),
+  lookPad: document.getElementById("lookPad"),
+  interactTouchBtn: document.getElementById("interactTouchBtn"),
+  prevTouchBtn: document.getElementById("prevTouchBtn"),
+  nextTouchBtn: document.getElementById("nextTouchBtn"),
+  menuTouchBtn: document.getElementById("menuTouchBtn"),
+  toast: document.getElementById("toast")
+};
+
+let scene;
+let camera;
+let renderer;
+let cameraTarget = new THREE.Vector3();
+let cameraLookTarget = new THREE.Vector3();
+let worldRoot;
+let worldPlayer;
+let interactiveMarkers = [];
+let movementVector = new THREE.Vector3();
+let velocity = new THREE.Vector3();
+let pointerLockedListenerBound = false;
+
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const showToast = (message) => {
+  refs.toast.textContent = message;
+  refs.toast.classList.remove("hidden");
+  clearTimeout(showToast.timeout);
+  showToast.timeout = setTimeout(() => refs.toast.classList.add("hidden"), 1800);
+};
+
+function detectInputMode() {
+  const coarse = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
+  const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const manual = localStorage.getItem("desertInputMode");
+
+  if (manual === "desktop" || manual === "mobile") return manual;
+
+  if (coarse && hasTouch) return "mobile";
+  return "desktop";
+}
+
+function applyInputMode(mode) {
+  state.inputMode = mode;
+
+  if (mode === "desktop") {
+    refs.desktopControls.classList.remove("hidden");
+    refs.mobileControls.classList.add("hidden");
+  } else {
+    refs.desktopControls.classList.add("hidden");
+    refs.mobileControls.classList.remove("hidden");
+  }
+
+  if (mode === "mobile") {
+    showToast("حالت موبایل فعال شد");
+  }
+
+  if (mode === "desktop") {
+    showToast("حالت کامپیوتر فعال شد");
+  }
+}
+
+function setMode(mode) {
+  state.mode = mode;
+  refs.modeLabel.textContent = mode === "presentation" ? "حالت ارائه" : "حالت اکتشاف";
+  refs.modeToggleBtn.textContent = mode === "presentation" ? "ورود به اکتشاف" : "ورود به ارائه";
+}
+
+function buildWorld() {
+  worldRoot = new THREE.Group();
+  scene.add(worldRoot);
+
+  const groundGeometry = new THREE.BoxGeometry(100, 2, 100);
+  const groundMaterial = new THREE.MeshStandardMaterial({ color: 0xd6a45a, flatShading: true });
+  const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+  ground.position.y = -1;
+  ground.receiveShadow = true;
+  worldRoot.add(ground);
+
+  const dunePositions = [
+    [-18, 1.2, 10], [-10, 1.6, -12], [8, 1.4, 14], [18, 1.1, -10], [0, 1.7, 17],
+    [-12, 1.5, 20], [15, 1.1, 6], [12, 1.6, -18], [-22, 1.4, -6], [0, 1.5, -18]
+  ];
+
+  dunePositions.forEach(([x, y, z], idx) => {
+    const dune = new THREE.Mesh(
+      new THREE.BoxGeometry(8 + (idx % 3) * 2.5, 2 + (idx % 4) * 0.5, 7 + (idx % 2) * 2.6),
+      new THREE.MeshStandardMaterial({ color: 0xe3b366, flatShading: true })
+    );
+    dune.position.set(x, y, z);
+    dune.rotation.y = idx * 0.8;
+    dune.castShadow = true;
+    dune.receiveShadow = true;
+    worldRoot.add(dune);
+  });
+
+  const rockData = [
+    { x: 10, y: 0.8, z: 7, sx: 2.4, sy: 1.7, sz: 2.1 },
+    { x: -10, y: 0.9, z: 12, sx: 2, sy: 1.8, sz: 1.7 },
+    { x: -12, y: 0.8, z: -8, sx: 2.8, sy: 1.6, sz: 2.2 },
+    { x: 18, y: 0.7, z: -15, sx: 3.2, sy: 1.9, sz: 2.7 },
+    { x: -18, y: 0.7, z: -16, sx: 2.4, sy: 1.4, sz: 2.1 },
+    { x: 0, y: 0.9, z: -10, sx: 3, sy: 1.8, sz: 2.5 }
+  ];
+
+  rockData.forEach((rock) => {
+    const mesh = new THREE.Mesh(
+      new THREE.BoxGeometry(rock.sx, rock.sy, rock.sz),
+      new THREE.MeshStandardMaterial({ color: 0x6f6c6c, flatShading: true })
+    );
+    mesh.position.set(rock.x, rock.y, rock.z);
+    mesh.rotation.y = rock.x * 0.23;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    worldRoot.add(mesh);
+  });
+
+  const camp = createStructure({ x: 5, y: 0.7, z: 2, w: 5, h: 2.2, d: 4, color: 0xb06a3d, label: "پایگاه اکتشاف" });
+  const hall = createStructure({ x: -8, y: 0.75, z: -3, w: 6, h: 3.1, d: 5, color: 0x9b7049, label: "تالار آموزشی" });
+  const observatory = createStructure({ x: -2, y: 0.8, z: -9, w: 4.2, h: 2.5, d: 4.2, color: 0x8b5f3a, label: "رصدخانه" });
+  const gate = createStructure({ x: 12, y: 0.85, z: -3, w: 2.5, h: 2.8, d: 2.4, color: 0x7a4d2d, label: "دروازه" });
+
+  worldRoot.add(camp.group, hall.group, observatory.group, gate.group);
+
+  const markers = [
+    { label: "بیابان چیست؟", position: [12, 1.2, 6], slide: 1 },
+    { label: "شکل‌گیری", position: [-10, 1.2, 8], slide: 2 },
+    { label: "نقشه جهان", position: [0, 1.5, 18], slide: 3 },
+    { label: "صحرای بزرگ", position: [16, 1.6, 10], slide: 4 },
+    { label: "گُبی", position: [-19, 1.6, 3], slide: 5 },
+    { label: "آتاکاما", position: [22, 1.7, -10], slide: 6 },
+    { label: "استرالیا", position: [-14, 1.6, -14], slide: 7 },
+    { label: "بیابان‌های سرد", position: [0, 1.6, 18], slide: 8 },
+    { label: "زندگی", position: [-8, 1.5, 10], slide: 9 },
+    { label: "مقایسه", position: [10, 1.5, 10], slide: 10 },
+    { label: "دانستنی‌ها", position: [6, 1.7, 15], slide: 11 },
+    { label: "جمع‌بندی", position: [0, 2.1, 14], slide: 12 }
+  ];
+
+  markers.forEach(({ label, position, slide }) => {
+    const marker = new THREE.Mesh(
+      new THREE.BoxGeometry(1, 1, 1),
+      new THREE.MeshStandardMaterial({ color: 0xf7d67c, emissive: 0x694a10, flatShading: true })
+    );
+    marker.position.set(position[0], position[1], position[2]);
+    marker.castShadow = true;
+    marker.userData = { label, slide };
+    worldRoot.add(marker);
+    interactiveMarkers.push(marker);
+  });
+
+  const sun = new THREE.Mesh(
+    new THREE.SphereGeometry(2.5, 18, 18),
+    new THREE.MeshBasicMaterial({ color: 0xffd776 })
+  );
+  sun.position.set(-18, 22, -20);
+  scene.add(sun);
+
+  const hemiLight = new THREE.HemisphereLight(0xfff3cc, 0x7e5332, 1.2);
+  scene.add(hemiLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffefbc, 1.1);
+  dirLight.position.set(15, 25, 10);
+  dirLight.castShadow = true;
+  dirLight.shadow.mapSize.set(1024, 1024);
+  scene.add(dirLight);
+
+  worldPlayer = new THREE.Object3D();
+  worldPlayer.position.set(0, 1.4, 10);
+  scene.add(worldPlayer);
+  camera.position.copy(worldPlayer.position);
+  camera.position.y += 1.6;
+}
+
+function createStructure({ x, y, z, w, h, d, color, label }) {
+  const group = new THREE.Group();
+  const base = new THREE.Mesh(
+    new THREE.BoxGeometry(w, h, d),
+    new THREE.MeshStandardMaterial({ color, flatShading: true })
+  );
+  base.position.y = y;
+  base.castShadow = true;
+  base.receiveShadow = true;
+  group.add(base);
+
+  const roof = new THREE.Mesh(
+    new THREE.BoxGeometry(w + 0.5, 0.8, d + 0.5),
+    new THREE.MeshStandardMaterial({ color: 0x8c4a26, flatShading: true })
+  );
+  roof.position.y = y + h / 2 + 0.7;
+  roof.castShadow = true;
+  group.add(roof);
+
+  group.position.set(x, 0, z);
+  group.userData = { label };
+  return { group };
+}
+
+function setupScene() {
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf4d69f);
+  scene.fog = new THREE.Fog(0xf2d39b, 15, 68);
+
+  camera = new THREE.PerspectiveCamera(68, window.innerWidth / window.innerHeight, 0.1, 200);
+  camera.rotation.order = "YXZ";
+  camera.position.set(0, 2.4, 10);
+
+  renderer = new THREE.WebGLRenderer({ canvas: refs.canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  buildWorld();
+
+  bindEvents();
+  renderSectionButtons();
+  renderComparison();
+  renderRegions();
+  setMode("presentation");
+  showSlide(0);
+  setTimeout(() => {
+    refs.loadingOverlay.classList.remove("visible");
+    refs.loadingOverlay.classList.add("hidden");
+  }, 500);
+}
+
+function bindEvents() {
+  refs.startBtn.addEventListener("click", () => {
+    refs.startScreen.classList.add("hidden");
+    refs.hud.classList.remove("hidden");
+    refs.hud.classList.add("visible");
+    state.started = true;
+    setMode("presentation");
+  });
+
+  refs.exploreBtnFromStart.addEventListener("click", () => {
+    refs.startScreen.classList.add("hidden");
+    refs.hud.classList.remove("hidden");
+    refs.hud.classList.add("visible");
+    state.started = true;
+    setMode("explore");
+  });
+
+  refs.nextBtn.addEventListener("click", () => nextSlide());
+  refs.prevBtn.addEventListener("click", () => prevSlide());
+  refs.prevTouchBtn.addEventListener("click", () => prevSlide());
+  refs.nextTouchBtn.addEventListener("click", () => nextSlide());
+  refs.interactTouchBtn.addEventListener("click", () => interactWithNearest());
+  refs.menuTouchBtn.addEventListener("click", () => {
+    refs.infoPanel.classList.toggle("hidden");
+  });
+
+  refs.modeToggleBtn.addEventListener("click", () => {
+    setMode(state.mode === "presentation" ? "explore" : "presentation");
+  });
+
+  refs.toggleInfoBtn.addEventListener("click", () => {
+    refs.infoPanel.classList.toggle("hidden");
+    state.infoVisible = !refs.infoPanel.classList.contains("hidden");
+  });
+
+  refs.pauseBtn.addEventListener("click", () => {
+    state.paused = !state.paused;
+    refs.pauseBtn.textContent = state.paused ? "ادامه" : "توقف";
+    showToast(state.paused ? "ارائه متوقف شد" : "ارائه از سر گرفته شد");
+  });
+
+  refs.fullscreenBtn.addEventListener("click", toggleFullscreen);
+
+  refs.quizRevealBtn.addEventListener("click", () => {
+    refs.quizAnswer.classList.toggle("hidden");
+  });
+
+  refs.qualitySelect.addEventListener("change", (event) => {
+    state.quality = event.target.value;
+    const map = { low: 1, medium: 1.5, high: 2 };
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio * map[state.quality], 2));
+    showToast(`کیفیت گرافیکی: ${event.target.options[event.target.selectedIndex].text}`);
+  });
+
+  window.addEventListener("resize", handleResize);
+  document.addEventListener("keydown", handleKeyDown);
+  document.addEventListener("keyup", handleKeyUp);
+
+  document.addEventListener("pointerlockchange", () => {
+    state.pointerLocked = document.pointerLockElement === refs.canvas;
+  });
+
+  refs.canvas.addEventListener("click", () => {
+    if (state.mode === "explore" && state.inputMode === "desktop" && !state.pointerLocked) {
+      refs.canvas.requestPointerLock();
+    }
+  });
+
+  document.addEventListener("mousemove", (event) => {
+    if (state.mode === "explore" && state.inputMode === "desktop" && state.pointerLocked) {
+      state.cameraYaw -= event.movementX * 0.0022;
+      state.cameraPitch -= event.movementY * 0.0018;
+      state.cameraPitch = clamp(state.cameraPitch, -1.2, 1.2);
+    }
+  });
+
+  document.addEventListener("pointerdown", (event) => {
+    if (state.inputMode !== "mobile") return;
+
+    if (event.target === refs.lookPad || event.target.closest("#lookPad")) {
+      state.lookTouchActive = true;
+      state.lookTouchX = event.clientX;
+      state.lookTouchY = event.clientY;
+    }
+
+    if (event.target.closest("#joystickBase")) {
+      const rect = refs.joystickBase.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dx = event.clientX - centerX;
+      const dy = event.clientY - centerY;
+      const limit = 30;
+      const length = Math.hypot(dx, dy);
+      const clampLen = Math.min(length, limit);
+      const angle = Math.atan2(dy, dx);
+      const knobX = Math.cos(angle) * clampLen;
+      const knobY = Math.sin(angle) * clampLen;
+      refs.joystickKnob.style.transform = `translate(${knobX}px, ${knobY}px)`;
+      state.touchMoveX = (knobX / limit) * 1.5;
+      state.touchMoveY = (knobY / limit) * 1.5;
+    }
+  });
+
+  document.addEventListener("pointermove", (event) => {
+    if (state.lookTouchActive && state.inputMode === "mobile") {
+      const dx = event.clientX - state.lookTouchX;
+      const dy = event.clientY - state.lookTouchY;
+      state.cameraYaw -= dx * 0.0035;
+      state.cameraPitch -= dy * 0.003;
+      state.cameraPitch = clamp(state.cameraPitch, -1.2, 1.2);
+      state.lookTouchX = event.clientX;
+      state.lookTouchY = event.clientY;
+    }
+
+    if (state.inputMode === "mobile" && event.target.closest("#joystickBase")) {
+      const rect = refs.joystickBase.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dx = event.clientX - centerX;
+      const dy = event.clientY - centerY;
+      const limit = 30;
+      const length = Math.hypot(dx, dy);
+      const safeLength = Math.min(length, limit);
+      const angle = Math.atan2(dy, dx);
+      const knobX = Math.cos(angle) * safeLength;
+      const knobY = Math.sin(angle) * safeLength;
+      refs.joystickKnob.style.transform = `translate(${knobX}px, ${knobY}px)`;
+      state.touchMoveX = (knobX / limit) * 1.5;
+      state.touchMoveY = (knobY / limit) * 1.5;
+    }
+  });
+
+  document.addEventListener("pointerup", () => {
+    state.lookTouchActive = false;
+    state.touchMoveX = 0;
+    state.touchMoveY = 0;
+    refs.joystickKnob.style.transform = "translate(-50%, -50%)";
+  });
+
+  refs.canvas.addEventListener("contextmenu", (event) => event.preventDefault());
+}
+
+function handleResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+}
+
+function handleKeyDown(event) {
+  const keyMap = {
+    KeyW: "forward",
+    KeyS: "backward",
+    KeyA: "left",
+    KeyD: "right",
+    ArrowLeft: "prev",
+    ArrowRight: "next",
+    KeyE: "interact",
+    KeyF: "fullscreen",
+    Escape: "escape"
+  };
+
+  const action = keyMap[event.code];
+
+  if (action === "prev") prevSlide();
+  if (action === "next") nextSlide();
+  if (action === "interact") interactWithNearest();
+  if (action === "fullscreen") toggleFullscreen();
+  if (action === "escape") {
+    if (document.fullscreenElement) document.exitFullscreen();
+  }
+
+  if (event.code === "KeyW") state.moveForward = true;
+  if (event.code === "KeyS") state.moveBackward = true;
+  if (event.code === "KeyA") state.moveLeft = true;
+  if (event.code === "KeyD") state.moveRight = true;
+}
+
+function handleKeyUp(event) {
+  if (event.code === "KeyW") state.moveForward = false;
+  if (event.code === "KeyS") state.moveBackward = false;
+  if (event.code === "KeyA") state.moveLeft = false;
+  if (event.code === "KeyD") state.moveRight = false;
+}
+
+function prevSlide() {
+  state.currentIndex = (state.currentIndex - 1 + slides.length) % slides.length;
+  showSlide(state.currentIndex);
+}
+
+function nextSlide() {
+  state.currentIndex = (state.currentIndex + 1) % slides.length;
+  showSlide(state.currentIndex);
+}
+
+function renderSectionButtons() {
+  refs.sectionNav.innerHTML = "";
+
+  slides.forEach((slide, index) => {
+    const button = document.createElement("button");
+    button.textContent = slide.meta.split("·")[1]?.trim() || `بخش ${index + 1}`;
+    if (index === state.currentIndex) button.classList.add("active");
+    button.addEventListener("click", () => showSlide(index));
+    refs.sectionNav.appendChild(button);
+  });
+}
+
+function showSlide(index) {
+  state.currentIndex = index;
+  const slide = slides[index];
+  state.activeSlide = slide;
+
+  refs.slideMeta.textContent = slide.meta;
+  refs.slideTitle.textContent = slide.title;
+  refs.slideContent.innerHTML = "";
+
+  slide.content.forEach((paragraph) => {
+    const el = document.createElement("p");
+    el.textContent = paragraph;
+    refs.slideContent.appendChild(el);
+  });
+
+  renderSectionButtons();
+  syncRegionSelection();
+
+  if (state.mode === "presentation") {
+    cameraTarget.set(...slide.camera.pos);
+    cameraLookTarget.set(...slide.camera.look);
+  }
+
+  if (index === slides.length - 1) {
+    refs.quizPanel.classList.remove("hidden");
+  } else {
+    refs.quizPanel.classList.add("hidden");
+  }
+}
+
+function renderRegions() {
+  refs.mapGrid.innerHTML = "";
+  regions.forEach((region) => {
+    const button = document.createElement("button");
+    button.className = "region-btn";
+    button.textContent = region.name;
+    button.addEventListener("click", () => {
+      refs.regionInfo.textContent = region.info;
+      const targetIndex = slides.findIndex((slide) => slide.id === region.target);
+      if (targetIndex >= 0) showSlide(targetIndex);
+      document.querySelectorAll(".region-btn").forEach((el) => el.classList.remove("active"));
+      button.classList.add("active");
+    });
+    refs.mapGrid.appendChild(button);
+  });
+}
+
+function syncRegionSelection() {
+  const currentName = slides[state.currentIndex].map;
+  const activeRegion = regions.find((region) => region.name === currentName || region.target === slides[state.currentIndex].id);
+  if (activeRegion) {
+    refs.regionInfo.textContent = activeRegion.info;
+  }
+
+  document.querySelectorAll(".region-btn").forEach((button) => {
+    const isActive = button.textContent.trim() === (activeRegion ? activeRegion.name : "");
+    button.classList.toggle("active", isActive);
+  });
+}
+
+function renderComparison() {
+  refs.compareChart.innerHTML = "";
+  const max = Math.max(...comparisonData.map((item) => item.value));
+
+  comparisonData.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "chart-row";
+
+    const label = document.createElement("span");
+    label.className = "chart-label";
+    label.textContent = item.label;
+
+    const barWrap = document.createElement("div");
+    barWrap.className = "bar-bg";
+
+    const bar = document.createElement("span");
+    bar.className = "bar-fill";
+    bar.style.width = `${(item.value / max) * 100}%`;
+
+    const value = document.createElement("span");
+    value.textContent = `${item.value}%`;
+
+    barWrap.appendChild(bar);
+    row.append(label, barWrap, value);
+    refs.compareChart.appendChild(row);
+  });
+}
+
+function interactWithNearest() {
+  let closest = null;
+  let closestDist = Infinity;
+
+  interactiveMarkers.forEach((marker) => {
+    const distance = marker.position.distanceTo(camera.position);
+    if (distance < closestDist) {
+      closest = marker;
+      closestDist = distance;
+    }
+  });
+
+  if (closest && closestDist < 5) {
+    const index = closest.userData.slide - 1;
+    showSlide(Math.max(0, Math.min(slides.length - 1, index)));
+    showToast(`تعامل: ${closest.userData.label}`);
+  } else {
+    showToast("اشیای قابل تعامل نزدیک نیستند");
+  }
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+function updateMovement(delta) {
+  const moveSpeed = state.mode === "explore" ? 8.5 : 0.2;
+  const cameraForward = new THREE.Vector3();
+  camera.getWorldDirection(cameraForward);
+  cameraForward.y = 0;
+  cameraForward.normalize();
+
+  const right = new THREE.Vector3().crossVectors(cameraForward, new THREE.Vector3(0, 1, 0)).normalize();
+  const move = new THREE.Vector3();
+
+  if (state.moveForward) move.add(cameraForward);
+  if (state.moveBackward) move.sub(cameraForward);
+  if (state.moveLeft) move.sub(right);
+  if (state.moveRight) move.add(right);
+
+  if (state.inputMode === "mobile") {
+    const joystickX = state.touchMoveX;
+    const joystickY = state.touchMoveY;
+
+    movementVector.set(joystickX, 0, joystickY);
+    movementVector.applyAxisAngle(new THREE.Vector3(0, 1, 0), -state.cameraYaw);
+    state.worldMoveX = movementVector.x;
+    state.worldMoveZ = movementVector.z;
+  }
+
+  const movementX = state.inputMode === "mobile" ? state.worldMoveX : move.x;
+  const movementZ = state.inputMode === "mobile" ? state.worldMoveZ : move.z;
+
+  if (movementX || movementZ) {
+    camera.position.x += movementX * moveSpeed * delta;
+    camera.position.z += movementZ * moveSpeed * delta;
+    camera.position.x = clamp(camera.position.x, -30, 30);
+    camera.position.z = clamp(camera.position.z, -30, 30);
+  }
+}
+
+function updateCamera(delta) {
+  if (state.paused) return;
+
+  if (state.mode === "presentation") {
+    camera.position.lerp(cameraTarget.clone().add(new THREE.Vector3(0, 1.7, 0)), 0.04);
+    camera.lookAt(cameraLookTarget);
+  } else {
+    camera.rotation.order = "YXZ";
+    camera.rotation.y = state.cameraYaw;
+    camera.rotation.x = state.cameraPitch;
+    camera.position.y = 1.8;
+
+    updateMovement(delta);
+  }
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const delta = 1 / 60;
+  if (!state.started) {
+    renderer.render(scene, camera);
+    return;
+  }
+
+  updateCamera(delta);
+  renderer.render(scene, camera);
+}
+
+const initialMode = detectInputMode();
+state.inputMode = initialMode;
+applyInputMode(initialMode);
+setupScene();
